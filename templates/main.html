@@ -10,7 +10,7 @@
         <p>books</p>
         <ul>
                 {% for i in books %}
-                <li><a href="{{ url_for('text', text_name= i['title']) }}">{{i['title']}}</a></li>
+                <li><a href="{{ url_for('text', text_name= i['name']) }}">{{i['name']}}</a></li>
                 {% endfor %}
         </ul>
     </div>

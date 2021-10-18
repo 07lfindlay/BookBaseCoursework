@@ -46,7 +46,12 @@ def text(text_name):
 @app.route('/graph')
 def graph():
     print("hi")
-    return render_template('graph.html')
+    results = makeQuery('''
+        MATCH (n:Text)
+        RETURN n
+        ''')
+    books = [(record['n']) for record in results]
+    return render_template('graph.html', books=books)
 
 if __name__ == '__main__':
     app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
