@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="../static/style.css" rel="stylesheet" type="text/css">
+<title>Yooooooooo</title>
+</head>
+<body>
+    <div id="element1">
+        <img src="{{ url_for('main_plot') }}" alt="Image">
+    </div>
+    <div id="element2">
+        <p>books</p>
+        <p>more stuff</p>
+        <p>yooooo </p>
+        <ul>
+                {% for i in books %}
+                <li><a href="">{{ books.name }}</a></li>
+                {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
