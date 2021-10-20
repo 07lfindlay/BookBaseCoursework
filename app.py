@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 def makeQuery(q):
     driver = GraphDatabase.driver(
-      "bolt://3.235.105.50",
-      auth=basic_auth("neo4j", "twirls-cargoes-misleads"))
+      "bolt://3.236.43.173:7687",
+      auth=basic_auth("neo4j", "roads-post-countries"))
     cypher_query = q
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
@@ -27,6 +27,7 @@ def main():
     RETURN n
     ''')
     books = [(record['n']) for record in results]
+
     y = type(books[0])
     #print(books[0]['title'])
     return render_template('main.html', books=books)
@@ -51,7 +52,13 @@ def graph():
         RETURN n
         ''')
     books = [(record['n']) for record in results]
-    return render_template('graph.html', books=books)
+    influences = makeQuery('''
+                    Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
+                    RETURN r.start, r.end, r.Influence
+                    ''')
+    print(influences[0]['r.start'][0])
+    print(books[0])
+    return render_template('graph.html', books=books, influences=influences)
 
 if __name__ == '__main__':
     app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)

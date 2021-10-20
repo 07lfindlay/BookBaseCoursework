@@ -18,30 +18,28 @@
   <script type="text/javascript">
       function draw() {
 var container = document.getElementById("mynetwork");
-var books = {{books|tojson|safe}}
-var nodelist = []
-for (let i= 0; i < books.length; i++){
-  nodelist.push({
-      'id': books[i]['id'] ,
-      'shape': "circularImage",
-      'image': books[i]['image'],
-      'label': books[i]['name'],
-      'fixed': false,
-      'url': 'text/' + books[i]['name']
-  })
+var books = {{books|tojson|safe}};
+var influences = {{influences|tojson|safe}};
+var nodelist = [];
+for (let i= 0; i < books.length; i++) {
+    nodelist.push({
+        'id': books[i]['id'],
+        'shape': "circularImage",
+        'image': books[i]['image'],
+        'label': books[i]['name'],
+        'fixed': false,
+        'url': 'text/' + books[i]['name']
+    });
+}
+var edgelist = [];
+for (let j= 0; j < influences.length; j++) {
+    edgelist.push(
+        {'from': influences[j]['r.start'][0], 'to': influences[j]['r.end'][0]}
+    );
 }
 
   var nodes = new vis.DataSet(nodelist);
-
-  var edges = new vis.DataSet([
-    {from: 13, to: 30, label: "WROTE"},
-    {from: 17, to: 29},
-    {from: 15, to: 14},
-    {from: 17, to: 15},
-    {from: 23, to: 16},
-    {from: 28, to: 17},
-    {from: 29, to: 18}
-  ]);
+  var edges = new vis.DataSet(edgelist);
   var data = {
     nodes: nodes,
     edges: edges
@@ -89,85 +87,3 @@ for (let i= 0; i < books.length; i++){
     <div id="mynetwork"></div>
   </body>
 </html>
-
-<!--<html lang="">
-        <head>
-             <title>Graph</title>
-                <style type="text/css">
-                    #viz {
-                        width: 100%;
-                        height: 100%;
-                        autoResize: true;
-                    }
-                </style>
-            <link rel="stylesheet" href="styles.css">
-            <script src="graphing.js"></script>
-        </head>
-    <body>
-    <p>hi</p>
-        <div id="graph"></div>
-    </body>
-</html>-->
-<!--<html>
-    <head>
-        <title>DataViz</title>
-        <style type="text/css">
-            #viz {
-                width: 100%;
-                height: 100%;
-                autoResize: true;
-            }
-        </style>
-        <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
-    </head>
-    <script>
-        function draw() {
-            var config = {
-                container_id: "viz",
-                server_url: "bolt://3.235.105.50",
-                server_user: "neo4j",
-                server_password: "twirls-cargoes-misleads",
-                labels: {
-                    "Text": {
-                        caption: "title",
-                        size: 20,
-                        community: "Genre",
-                        //image: "image"
-                    },
-                    "Author": {
-                        caption: "name",
-                        size: 20,
-                        community:"Movement"
-                    },
-                    "Genre": {
-                        caption: "name",
-                        size: 20
-                    }
-                },
-                relationships: {
-                    "INFLUENCED": {
-                        caption: "nature",
-                        thickness: 7,
-                        //image: "https://cdn.shopify.com/s/files/1/0081/1260/3217/products/2ae0626457064b8a874fbb899abeff96_2048x2048.jpg?v=1598869364"
-                    },
-                    "WROTE": {
-                        caption: false,
-                        thickness: 8,
-                    },
-                    "Genre": {
-                        caption: false,
-                        thickness: 4,
-                    }
-                },
-                initial_cypher: "MATCH (n1)-[r]->(n2) RETURN r, n1, n2 LIMIT 40"//"MATCH (n) RETURN n"
-            }
-
-            var viz = new NeoVis.default(config);
-            viz.render();
-            viz.stablize()
-        }
-    </script>
-    <body onload="draw()">
-        <div id="viz"></div>
-    </body>
-</html>-->
