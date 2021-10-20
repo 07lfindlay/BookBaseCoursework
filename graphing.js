@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
   var image3 = 'https://upload.wikimedia.org/wikipedia/commons/a/ab/JoyceUlysses2.jpg';
   var container = document.querySelector('#graph');
   var nodes = new vis.DataSet([
@@ -110,4 +110,4 @@ var edges = new vis.DataSet(
     network.unselectAll();
   });
 
-});
+});*/
