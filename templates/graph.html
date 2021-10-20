@@ -19,8 +19,11 @@
       function draw() {
 var container = document.getElementById("mynetwork");
 var books = {{books|tojson|safe}};
+var writer = {{writer|tojson|safe}};
 var influences = {{influences|tojson|safe}};
+var wrote = {{wrote|tojson|safe}};
 var nodelist = [];
+
 for (let i= 0; i < books.length; i++) {
     nodelist.push({
         'id': books[i]['id'],
@@ -31,12 +34,27 @@ for (let i= 0; i < books.length; i++) {
         'url': 'text/' + books[i]['name']
     });
 }
+console.log(nodelist);
+for (let b= 0; b < writer.length; b++) {
+    nodelist.push({
+        'id': writer[b]['id'],
+        'shape': "circularImage",
+        'image': writer[b]['image'],
+        'label': writer[b]['name'],
+        'fixed': false,
+        'url': 'google.com'
+    });
+}
 var edgelist = [];
 for (let j= 0; j < influences.length; j++) {
     edgelist.push(
-        {'from': influences[j]['r.start'][0], 'to': influences[j]['r.end'][0]}
+        {'from': influences[j]['r.start'][0], 'to': influences[j]['r.end'][0], 'label': influences[j]['r.Influence'][0]}
     );
 }
+for (let j= 0; j < wrote.length; j++) {
+    edgelist.push(
+        {'from': wrote[j]['r.start'][0], 'to': wrote[j]['r.end'][0], 'label': 'wrote'}
+    );
 
   var nodes = new vis.DataSet(nodelist);
   var edges = new vis.DataSet(edgelist);
@@ -81,7 +99,6 @@ for (let j= 0; j < influences.length; j++) {
     network.unselectAll();
   });
 }
-
   </script>
   <body onload="draw()">
     <div id="mynetwork"></div>

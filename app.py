@@ -52,13 +52,25 @@ def graph():
         RETURN n
         ''')
     books = [(record['n']) for record in results]
+    writresults = makeQuery('''
+            MATCH (n:Author)
+            RETURN n
+            ''')
+    writer = [(record['n']) for record in writresults]
     influences = makeQuery('''
-                    Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
-                    RETURN r.start, r.end, r.Influence
-                    ''')
+                        Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
+                        RETURN r.start, r.end, r.Influence
+                        ''')
+    wrote = makeQuery('''
+                        Match (n :Author)-[r :WROTE]->(n2 :Text)
+                        RETURN r.start, r.end
+                        ''')
     print(influences[0]['r.start'][0])
     print(books[0])
-    return render_template('graph.html', books=books, influences=influences)
+    print(writer[3]['name'])
+    print(wrote)
+    return render_template('graph.html', books=books, influences=influences, writer=writer, wrote=wrote)
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
