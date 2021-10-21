@@ -31,7 +31,10 @@ for (let i= 0; i < books.length; i++) {
         'image': books[i]['image'],
         'label': books[i]['name'],
         'fixed': false,
-        'url': 'text/' + books[i]['name']
+        'url': 'text/' + books[i]['name'],
+        'color': {
+            'border': '#00c5ff'
+        }
     });
 }
 console.log(nodelist);
@@ -42,19 +45,26 @@ for (let b= 0; b < writer.length; b++) {
         'image': writer[b]['image'],
         'label': writer[b]['name'],
         'fixed': false,
-        'url': 'google.com'
+        'url': 'google.com',
+        'color': {
+            'border': '#f50404'
+        },
+        'shapeProperties': {
+            'useBorderWithImage': true
+        }
     });
 }
 var edgelist = [];
 for (let j= 0; j < influences.length; j++) {
     edgelist.push(
-        {'from': influences[j]['r.start'][0], 'to': influences[j]['r.end'][0], 'label': influences[j]['r.Influence'][0]}
+        {'from': influences[j]['r.start'][0], 'to': influences[j]['r.end'][0], 'label': influences[j]['r.Influence'][0], 'color': "#23a140"}
     );
 }
 for (let j= 0; j < wrote.length; j++) {
     edgelist.push(
-        {'from': wrote[j]['r.start'][0], 'to': wrote[j]['r.end'][0], 'label': 'wrote'}
+        {'from': wrote[j]['r.start'], 'to': wrote[j]['r.end'], 'label': 'Wrote', 'color': "#1320c0"}
     );
+}
 
   var nodes = new vis.DataSet(nodelist);
   var edges = new vis.DataSet(edgelist);
@@ -65,12 +75,8 @@ for (let j= 0; j < wrote.length; j++) {
 
   var options = {
     nodes: {
-      borderWidth: 0,
+      borderWidth: 7,
       size: 42,
-      color: {
-        border: "#222",
-        background: "transparent"
-      },
       font: {
         color: "#111",
         face: "Helvetic",
