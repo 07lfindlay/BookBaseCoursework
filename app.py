@@ -11,41 +11,13 @@ def makeQuery(q):
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
         lambda tx: tx.run(cypher_query).data())
-      #for record in results:
-        #print(record['n'])
     driver.close()
     return results
-
-
 
 
 @app.route('/')
 def main():
     """yoooooooo"""
-    results = makeQuery('''
-    MATCH (n:Text)
-    RETURN n
-    ''')
-    books = [(record['n']) for record in results]
-
-    y = type(books[0])
-    #print(books[0]['title'])
-    return render_template('main.html', books=books)
-
-
-@app.route('/text/<string:text_name>')
-def text(text_name):
-    q = '''
-    MATCH (n:Text {title: '%s'})
-    RETURN n
-    ''' % (str(text_name))
-    text_record = makeQuery(q)
-    print(text_record)
-    return render_template('text.html', text_name=text_name, text_record=text_record)
-
-
-@app.route('/graph')
-def graph():
     print("hi")
     results = makeQuery('''
         MATCH (n:Text)
@@ -70,6 +42,28 @@ def graph():
     print(writer[3]['name'])
     print(wrote)
     return render_template('graph.html', books=books, influences=influences, writer=writer, wrote=wrote)
+
+
+@app.route('/text/<string:text_name>')
+def text(text_name):
+    q = '''
+    MATCH (n:Text {name: '%s'})
+    RETURN n
+    ''' % (str(text_name))
+    text_record = makeQuery(q)
+    print(text_record)
+    return render_template('text.html', text_name=text_name, text_record=text_record)
+
+
+@app.route('/writer/<string:writer_name>')
+def writer(writer_name):
+    q = '''
+    MATCH (n:Author {name: '%s'})
+    RETURN n
+    ''' % (str(writer_name))
+    writer_record = makeQuery(q)
+    print(writer_record)
+    return render_template('writer.html', writer_name=writer_name, writer_record=writer_record)
 
 
 if __name__ == '__main__':
