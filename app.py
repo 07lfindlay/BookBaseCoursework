@@ -29,10 +29,19 @@ def main():
             RETURN n
             ''')
     writer = [(record['n']) for record in writresults]
-    influences = makeQuery('''
-                        Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
-                        RETURN r.start, r.end, r.Influence
+    genrelinks = makeQuery('''
+                        Match (n :Genre)-[r :Genre]->(n2 :Text) 
+                        RETURN r.start, r.end
                         ''')
+    genresresults = makeQuery('''
+                MATCH (n:Genre)
+                RETURN n
+                ''')
+    genres = [(record['n']) for record in genresresults]
+    influences = makeQuery('''
+                            Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
+                            RETURN r.start, r.end, r.Influence
+                            ''')
     wrote = makeQuery('''
                         Match (n :Author)-[r :WROTE]->(n2 :Text)
                         RETURN r.start, r.end
@@ -40,8 +49,16 @@ def main():
     print(influences[0]['r.start'][0])
     print(books[0])
     print(writer[3]['name'])
-    print(wrote)
-    return render_template('graph.html', books=books, influences=influences, writer=writer, wrote=wrote)
+    print(genrelinks)
+    return render_template('graph.html',
+                           books=books,
+                           influences=influences,
+                           writer=writer,
+                           wrote=wrote,
+                           genres=genres,
+                           genrelinks=genrelinks
+                           )
+
 
 
 @app.route('/text/<string:text_name>')
@@ -55,7 +72,7 @@ def text(text_name):
     return render_template('text.html', text_name=text_name, text_record=text_record)
 
 
-@app.route('/writer/<string:writer_name>')
+@app.route('/writers/<string:writer_name>')
 def writer(writer_name):
     q = '''
     MATCH (n:Author {name: '%s'})
@@ -65,6 +82,16 @@ def writer(writer_name):
     print(writer_record)
     return render_template('writer.html', writer_name=writer_name, writer_record=writer_record)
 
+
+@app.route('/genres/<string:genre_name>')
+def genres(genre_name):
+    q = '''
+    MATCH (n:Genre {name: '%s'})
+    RETURN n
+    ''' % (str(genre_name))
+    genre_record = makeQuery(q)
+    print(genre_record)
+    return render_template('genre.html', genre_name=genre_name, genre_record=genre_record)
 
 if __name__ == '__main__':
     app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
