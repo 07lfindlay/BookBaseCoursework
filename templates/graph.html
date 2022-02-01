@@ -1,20 +1,54 @@
-<html lang="en">
-  <head>
-    <title>Homepage</title>
-    <script
-      type="text/javascript"
-      src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"
-    ></script>
-    <style type="../static/styles.css"></style>
-  </head>
-  <script type="text/javascript", src="../static/graphing.js">
-  </script>
-  <body onload='draw({{books|tojson|safe}},
-          {{writer|tojson|safe}},
-          {{wrote|tojson|safe}},
-          {{influences|tojson|safe}},
-          {{genres|tojson|safe}},
-          {{genrelinks|tojson|safe}})'>
-    <div id="mynetwork"></div>
-  </body>
-</html>
+<!doctype html>
+    <html lang="en">
+
+      <head>
+        <title>Homepage</title>
+      </head>
+          <script
+          type="text/javascript"
+          src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
+          <script type="text/javascript", src="../static/graphing.js">
+          </script>
+          <script type="text/javascript", src="../static/slider.js">
+          </script>
+          <script type="text/javascript", src="../static/Search.js">
+          </script>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/FilterStyling.css') }}">
+
+      <div class="GraphBox" id="Overlay">
+        <div class="Overlay">
+          <input type="checkbox" id="texts" name="texts" onclick='OverCompile({{books|tojson|safe}},
+                          {{writer|tojson|safe}},
+                          {{wrote|tojson|safe}},
+                          {{influences|tojson|safe}},
+                          {{genres|tojson|safe}},
+                          {{genrelinks|tojson|safe}})'>
+          <label for="texts">Texts</label>
+          <input type="checkbox" id="writers" name="writers" onclick='OverCompile({{books|tojson|safe}},
+                            {{writer|tojson|safe}},
+                            {{wrote|tojson|safe}},
+                            {{influences|tojson|safe}},
+                            {{genres|tojson|safe}},
+                            {{genrelinks|tojson|safe}})'>
+          <label for="writers">Writers</label>
+          <input type="checkbox" id="genres" name="genres" onclick='OverCompile({{books|tojson|safe}},
+                            {{writer|tojson|safe}},
+                            {{wrote|tojson|safe}},
+                            {{influences|tojson|safe}},
+                            {{genres|tojson|safe}},
+                            {{genrelinks|tojson|safe}})'>
+          <label for="genres">Genres</label>
+          <div class="search">
+              <input type="text" class="searchTerm" placeholder="What are you looking for?">
+              <button type="submit" class="searchButton" onclick="Search()">
+                <i class="fa fa-search"></i>
+             </button>
+          </div>
+        </div>
+
+      </div>
+    <div class=graph id="mynetwork"></div>
+
+    </html>

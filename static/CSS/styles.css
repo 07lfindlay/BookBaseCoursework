@@ -1,0 +1,10 @@
+
+#mynetwork {
+           width: 100vw;
+           height: 100vh;
+           position: static;
+         }
+
+         * {
+           box-sizing: border-box
+         }

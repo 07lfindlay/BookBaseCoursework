@@ -1,18 +1,33 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from neo4j import GraphDatabase, basic_auth
+import json
 app = Flask(__name__)
 
 
 def makeQuery(q):
     driver = GraphDatabase.driver(
-      "bolt://3.236.43.173:7687",
-      auth=basic_auth("neo4j", "roads-post-countries"))
+      "bolt://3.239.226.213:7687",
+      auth=basic_auth("neo4j", "mondays-crusts-accruals"))
     cypher_query = q
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
         lambda tx: tx.run(cypher_query).data())
     driver.close()
     return results
+
+@app.route('/Searcher', methods = ['POST'])
+def Search():
+    if request.method == 'POST':
+        q = makeQuery('''
+                    MATCH (n)
+                    WHERE n.name CONTAINS "%s"
+                    RETURN n
+                    ''' % (str(request.form['SearchTerms'])))
+        nodes = [(record['n']) for record in q]
+        return jsonify(nodes)
+        # Failure to return a redirect or render_template
+    else:
+        return render_template('graph.html')
 
 
 @app.route('/')
@@ -61,10 +76,10 @@ def main():
 
 
 
-@app.route('/text/<string:text_name>')
+@app.route('/texts/<string:text_name>')
 def text(text_name):
     q = '''
-    MATCH (n:Text {name: '%s'})
+    MATCH (n:Text {name: "%s"})
     RETURN n
     ''' % (str(text_name))
     text_record = makeQuery(q)
@@ -75,7 +90,7 @@ def text(text_name):
 @app.route('/writers/<string:writer_name>')
 def writer(writer_name):
     q = '''
-    MATCH (n:Author {name: '%s'})
+    MATCH (n:Author {name: "%s"})
     RETURN n
     ''' % (str(writer_name))
     writer_record = makeQuery(q)
