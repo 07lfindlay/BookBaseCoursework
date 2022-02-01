@@ -1,4 +1,6 @@
 function compile(stuff, nodelist, type){
+    console.log(stuff);
+    console.log(stuff.length);
     for (let i= 0; i < stuff.length; i++) {
     nodelist.push({
         'id': stuff[i]['id'],
@@ -12,6 +14,7 @@ function compile(stuff, nodelist, type){
         }
     });
 }
+    console.log(nodelist);
     return nodelist;
 }
 
@@ -55,6 +58,7 @@ function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
     draw(nodelist, edgelist)
 }
 function draw(nodelist, edgelist){
+    console.log("Currently Drawing with{0}", nodelist);
     var container = document.getElementById("mynetwork");
       var nodes = new vis.DataSet(nodelist);
       var edges = new vis.DataSet(edgelist);

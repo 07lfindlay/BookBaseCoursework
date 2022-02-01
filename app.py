@@ -16,14 +16,20 @@ def makeQuery(q):
     return results
 
 @app.route('/Searcher', methods = ['POST'])
-def Search():
+def search():
     if request.method == 'POST':
+        searchterms = request.args.get('searchterms')
+        print("Request.form: {0}".format(request.form))
+        #print("Request: {0}".format(request.form.get('body')))
+        #req = request.form['searchterms']
+        print(searchterms)
         q = makeQuery('''
                     MATCH (n)
-                    WHERE n.name CONTAINS "%s"
+                    WHERE n.name CONTAINS "{0}"
                     RETURN n
-                    ''' % (str(request.form['SearchTerms'])))
+                    '''.format(str(searchterms)))
         nodes = [(record['n']) for record in q]
+        print(nodes)
         return jsonify(nodes)
         # Failure to return a redirect or render_template
     else:
