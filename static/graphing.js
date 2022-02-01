@@ -1,7 +1,16 @@
-function compile(stuff, nodelist, type){
-    console.log(stuff);
-    console.log(stuff.length);
-    for (let i= 0; i < stuff.length; i++) {
+function compile(stuff, nodelist, type, isJson){
+    console.log(typeof stuff);
+    console.log("compiling ",stuff);;
+    var count;
+    if (isJson){
+        count = objLength(stuff);
+    }
+    else{
+        count = stuff.length
+    }
+    console.log(count);
+    for (let i= 0; i < count; i++) {
+        console.log(stuff[i]);
     nodelist.push({
         'id': stuff[i]['id'],
         'shape': "circularImage",
@@ -17,19 +26,28 @@ function compile(stuff, nodelist, type){
     console.log(nodelist);
     return nodelist;
 }
+function objLength(obj){
+  var i=0;
+  for (var x in obj){
+    if(obj.hasOwnProperty(x)){
+      i++;
+    }
+  }
+  return i;
+}
 
 function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
 
     var nodelist = [];
 
     if (document.getElementById("texts").checked) {
-        nodelist = compile(books, nodelist, 'texts');
+        nodelist = compile(books, nodelist, 'texts', false);
     }
     if (document.getElementById("writers").checked) {
-        nodelist = compile(writer, nodelist, 'writers');
+        nodelist = compile(writer, nodelist, 'writers', false);
     }
     if (document.getElementById("genres").checked) {
-        nodelist = compile(genre, nodelist, 'genres');
+        nodelist = compile(genre, nodelist, 'genres', false);
     }
 
 
@@ -58,7 +76,7 @@ function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
     draw(nodelist, edgelist)
 }
 function draw(nodelist, edgelist){
-    console.log("Currently Drawing with{0}", nodelist);
+    console.log("Currently Drawing with ", nodelist);
     var container = document.getElementById("mynetwork");
       var nodes = new vis.DataSet(nodelist);
       var edges = new vis.DataSet(edgelist);

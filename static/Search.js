@@ -1,27 +1,20 @@
 
 function Search() {
     var searchtext = document.getElementById('SearchBar').value;
-    console.log(searchtext);
-
+    //console.log(searchtext);
+    let nodes;
     fetch(`/Searcher?searchterms=${searchtext}`, {method: 'POST'})
-.then(data => data.json())
-.then(json => console.log(json));
-    /**var data = $.post('/Searcher', {
-            SearchTerms: document.getElementById('SearchBar')
-        });
-    console.log(data);
-    nodes = [];
-    nodes = compile(data, nodes, "stuff");
+        .then(data => data.json()).then(json => {console.log(json);
+            nodes = json;
+            console.log(nodes);
+            console.log(typeof nodes)
+            let newnodes = compile(nodes, [], "stuff", true);
+            console.log(newnodes)
+            draw(newnodes, []);
 
-    draw(nodes, []);**/
+        })
+
+
+
 
 }
-
-// Jad reccomends data.SearchTerms
-
-    /**.done(function(response) {
-                $(destElem).text(response['text'])
-            }).fail(function() {
-                $(destElem).text("{{ _('Error: Could not contact server.') }}");
-            });**/
-
