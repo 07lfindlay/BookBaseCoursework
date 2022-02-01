@@ -11,6 +11,7 @@ function Search() {
 
 }
 
+// Jad reccomends data.SearchTerms
 
     /**.done(function(response) {
                 $(destElem).text(response['text'])
