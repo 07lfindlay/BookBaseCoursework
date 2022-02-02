@@ -86,7 +86,6 @@ function draw(nodelist, edgelist){
         nodes: nodes,
         edges: edges
       };
-
       var options = {
           //style options for nodes
         nodes: {
@@ -111,7 +110,6 @@ function draw(nodelist, edgelist){
           hoverWidth: 0.05
         }
       };
-
       var network = new vis.Network(container, data, options);
       network.on("selectNode", function (params) {
         if (params.nodes.length === 1) {
