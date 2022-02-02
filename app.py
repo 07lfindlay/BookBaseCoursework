@@ -35,30 +35,36 @@ def search():
     else:
         return render_template('graph.html')
 
+@app.route('/Filter', methods = ['POST'])
+def filter():
+    if request.method == 'POST':
+        filterterm = request.args.get('filterterm')
+        print("Request.form: {0}".format(request.form))
+        print(filterterm)
+        q = makeQuery('''
+                    MATCH (n:{0})
+                    RETURN n
+                    '''.format(str(filterterm)))
+        nodes = [(record['n']) for record in q]
+        print(nodes)
+        return jsonify(nodes)
+        # Failure to return a redirect or render_template
+    else:
+        return render_template('graph.html')
 
 @app.route('/')
 def main():
-    """yoooooooo"""
+    """HOME"""
     print("hi")
     results = makeQuery('''
-        MATCH (n:Text)
+        MATCH (n)
         RETURN n
         ''')
-    books = [(record['n']) for record in results]
-    writresults = makeQuery('''
-            MATCH (n:Author)
-            RETURN n
-            ''')
-    writer = [(record['n']) for record in writresults]
+    nodes = [(record['n']) for record in results]
     genrelinks = makeQuery('''
                         Match (n :Genre)-[r :Genre]->(n2 :Text) 
                         RETURN r.start, r.end
                         ''')
-    genresresults = makeQuery('''
-                MATCH (n:Genre)
-                RETURN n
-                ''')
-    genres = [(record['n']) for record in genresresults]
     influences = makeQuery('''
                             Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
                             RETURN r.start, r.end, r.Influence
@@ -68,15 +74,11 @@ def main():
                         RETURN r.start, r.end
                         ''')
     print(influences[0]['r.start'][0])
-    print(books[0])
-    print(writer[3]['name'])
     print(genrelinks)
     return render_template('graph.html',
-                           books=books,
+                           nodes=nodes,
                            influences=influences,
-                           writer=writer,
                            wrote=wrote,
-                           genres=genres,
                            genrelinks=genrelinks
                            )
 

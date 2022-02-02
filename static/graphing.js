@@ -1,6 +1,6 @@
-function compile(stuff, nodelist, type, isJson){
+function compile(stuff, nodelist, isJson){
     console.log(typeof stuff);
-    console.log("compiling ",stuff);;
+    console.log("compiling ",stuff);
     var count;
     if (isJson){
         count = objLength(stuff);
@@ -10,22 +10,22 @@ function compile(stuff, nodelist, type, isJson){
     }
     console.log(count);
     for (let i= 0; i < count; i++) {
-        console.log(stuff[i]);
     nodelist.push({
         'id': stuff[i]['id'],
         'shape': "circularImage",
         'image': stuff[i]['image'],
         'label': stuff[i]['name'],
         'fixed': false,
-        'url': type + '/' + stuff[i]['name'],
+        'url': stuff[i]['type'] + '/' + stuff[i]['name'],
         'color': {
             'border': '#00c5ff'
         }
     });
 }
-    console.log(nodelist);
+    console.log("end of compile nodelist", nodelist);
     return nodelist;
 }
+
 function objLength(obj){
   var i=0;
   for (var x in obj){
@@ -36,21 +36,9 @@ function objLength(obj){
   return i;
 }
 
-function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
-
-    var nodelist = [];
-
-    if (document.getElementById("texts").checked) {
-        nodelist = compile(books, nodelist, 'texts', false);
-    }
-    if (document.getElementById("writers").checked) {
-        nodelist = compile(writer, nodelist, 'writers', false);
-    }
-    if (document.getElementById("genres").checked) {
-        nodelist = compile(genre, nodelist, 'genres', false);
-    }
-
-
+async function OverCompile(nodes, wrote, influences, genrelinks) {
+    var nodelist2 = await Filter();
+    console.log("nodelist", nodelist2)
     var edgelist = [];
     for (let j = 0; j < influences.length; j++) {
         edgelist.push(
@@ -67,14 +55,15 @@ function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
             {'from': wrote[j]['r.start'], 'to': wrote[j]['r.end'], 'label': 'Wrote', 'color': "#1320c0"}
         );
     }
-
     for (let j = 0; j < genrelinks.length; j++) {
         edgelist.push(
             {'from': genrelinks[j]['r.start'], 'to': genrelinks[j]['r.end'], 'label': 'Genre', 'color': "#af9637"}
         );
     }
-    draw(nodelist, edgelist)
+    console.log("Nodelist, Edgelist", nodelist2, edgelist)
+    draw(nodelist2, edgelist)
 }
+
 function draw(nodelist, edgelist){
     console.log("Currently Drawing with ", nodelist);
     var container = document.getElementById("mynetwork");
