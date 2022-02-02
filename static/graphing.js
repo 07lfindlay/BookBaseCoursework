@@ -1,9 +1,10 @@
 function compile(stuff, nodelist, type, isJson){
-    console.log(typeof stuff);
+    //This function takes a raw list of node data and converts it into a format that the draw() function can parse
+    console.log(typeof stuff); 
     console.log("compiling ",stuff);;
     var count;
     if (isJson){
-        count = objLength(stuff);
+        count = objLength(stuff); //JSON has no inherent length property, so length must be calculated
     }
     else{
         count = stuff.length
@@ -76,6 +77,7 @@ function OverCompile(books,  writer, wrote, influences, genre, genrelinks) {
     draw(nodelist, edgelist)
 }
 function draw(nodelist, edgelist){
+    //This takes a list of nodes, and a list of edges and renders the graph within the 'mynetwork' container
     console.log("Currently Drawing with ", nodelist);
     var container = document.getElementById("mynetwork");
       var nodes = new vis.DataSet(nodelist);
@@ -86,6 +88,7 @@ function draw(nodelist, edgelist){
       };
 
       var options = {
+          //style options for nodes
         nodes: {
           borderWidth: 7,
           size: 42,
@@ -98,6 +101,7 @@ function draw(nodelist, edgelist){
           }
         },
         edges: {
+            //style options for edges
           color: {
             color: "#CCC",
             highlight: "#A22"
