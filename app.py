@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 
 def makeQuery(q):
+    #Performs a query to the Neo4j database and returns the results
     driver = GraphDatabase.driver(
       "bolt://3.239.226.213:7687",
       auth=basic_auth("neo4j", "mondays-crusts-accruals"))
@@ -18,6 +19,7 @@ def makeQuery(q):
 @app.route('/Searcher', methods = ['POST'])
 def search():
     if request.method == 'POST':
+        #This takes a search terms as an argument, queries the database for any titles that contain it, and returns a JSON of the results
         searchterms = request.args.get('searchterms')
         print("Request.form: {0}".format(request.form))
         #print("Request: {0}".format(request.form.get('body')))
@@ -86,6 +88,7 @@ def main():
 
 @app.route('/texts/<string:text_name>')
 def text(text_name):
+    #function for rendering individual text page
     q = '''
     MATCH (n:Text {name: "%s"})
     RETURN n
@@ -97,6 +100,7 @@ def text(text_name):
 
 @app.route('/writers/<string:writer_name>')
 def writer(writer_name):
+    #function for rendering individual writer page
     q = '''
     MATCH (n:Author {name: "%s"})
     RETURN n
@@ -108,6 +112,7 @@ def writer(writer_name):
 
 @app.route('/genres/<string:genre_name>')
 def genres(genre_name):
+    #function for rendering individual genre page
     q = '''
     MATCH (n:Genre {name: '%s'})
     RETURN n
