@@ -13,8 +13,4 @@ function Search() {
             draw(newnodes, []);
 
         })
-
-
-
-
 }
