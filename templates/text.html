@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link href="../static/CSS/styles.css" rel="stylesheet" type="text/css">
-    <title>{{ text_name }}</title>
-</head>
-<body>
-    <div id="element2">
-        <h1>{{text_name}}.</h1>
-        <p>{{ text_record[0]['n']['released'] }}</p>
-        <img src="{{ text_record[0]['n']['image'] }}" style="width:50%">
 
-        <p><a href="/">Back to the main page</a></p>
+  <head>
+    <meta charset="UTF-8">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+      <link href="../static/CSS/styles.css" rel="stylesheet" type="text/css">
+      <script type="text/javascript", src="../static/SlideShow.js">
+          </script>
+      <title>{{ text_name }}</title>
+  </head>
+
+  <body>
+
+    <div id="Attributes">
+        <h1 id="Title">{{text_name}}</h1>
+        <h2 id="Subtitle">Info</h2>
+        <p id="infotext">Date Written: {{ text_record[0]['n']['released'] }}</p>
     </div>
-<!-- Slideshow container -->
+    <!-- Slideshow container -->
     <div class="slideshow-container">
+
       <!-- Full-width images with number and caption text -->
-      <div class="mySlides fade">
+      <div class="mySlides fade" style="display: block;">
         <div class="numbertext">1 / 3</div>
-        <img src="img1.jpg" style="width:100%">
-        <div class="text">Caption Text</div>
+        <img src="{{ text_record[0]['n']['image'] }}" style="width:100%">
       </div>
 
       <div class="mySlides fade">
         <div class="numbertext">2 / 3</div>
-        <img src="img2.jpg" style="width:100%">
-        <div class="text">Caption Two</div>
+        <img src="{{ text_record[0]['n']['image2'] }}" style="width:100%">
       </div>
 
       <div class="mySlides fade">
         <div class="numbertext">3 / 3</div>
-        <img src="img3.jpg" style="width:100%">
-        <div class="text">Caption Three</div>
+        <img src="{{ text_record[0]['n']['image3'] }}" style="width:100%">
       </div>
 
       <!-- Next and previous buttons -->
@@ -45,5 +49,11 @@
       <span class="dot" onclick="currentSlide(2)"></span>
       <span class="dot" onclick="currentSlide(3)"></span>
     </div>
-</body>
+
+    <h2 id="Subtitle">Synopsis</h2>
+    <p id="infotext">{{ text_record[0]['n']['Synopsis'] }}</p>
+
+    <p><a href="/">Back to the main page</a></p>
+  </body>
+
 </html>

@@ -7,8 +7,8 @@ app = Flask(__name__)
 def makeQuery(q):
     #Performs a query to the Neo4j database and returns the results
     driver = GraphDatabase.driver(
-      "bolt://3.239.226.213:7687",
-      auth=basic_auth("neo4j", "mondays-crusts-accruals"))
+      "bolt://18.207.179.12:7687",
+      auth=basic_auth("neo4j", "backups-corks-hazard"))
     cypher_query = q
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
@@ -37,6 +37,42 @@ def search():
     else:
         return render_template('graph.html')
 
+@app.route('/WideSearcher', methods=['POST'])
+def widesearch():
+        if request.method == 'POST':
+            # This takes a search terms as an argument, queries the database for any titles that contain it, and returns a JSON of the results
+            searchterms = request.args.get('searchterms')
+            radius = int(request.args.get('radius'))
+            nodes = RadiusMaker(radius, searchterms)
+            return jsonify(nodes)
+        else:
+            return render_template('graph.html')
+
+def RadiusMaker(radius, searchterms):
+
+    u = makeQuery('''
+                    MATCH (n)
+                    WHERE n.name CONTAINS "{0}"
+                    RETURN n
+                    '''.format(str(searchterms)))
+    results = [(record['n']) for record in u]
+
+    curq = '''(n)'''
+    num = -1
+    for i in range(radius):
+        curstr = str('''-[l{0}:REL]-(n{0})'''.format(str(i)))
+        curq += curstr
+        num += 1
+        curresults = makeQuery('''
+            MATCH {0}
+            WHERE n.name CONTAINS "{1}"
+            RETURN n{2}'''.format(str(curq), str(searchterms), str(num)))
+        results += [(record['n{0}'.format(str(num))]) for record in curresults]
+
+
+    return results
+
+
 @app.route('/Filter', methods = ['POST'])
 def filter():
     if request.method == 'POST':
@@ -57,36 +93,24 @@ def filter():
 @app.route('/')
 def main():
     """HOME"""
-    print("hi")
     results = makeQuery('''
         MATCH (n)
         RETURN n
         ''')
     nodes = [(record['n']) for record in results]
-    genrelinks = makeQuery('''
-                        Match (n :Genre)-[r :Genre]->(n2 :Text) 
-                        RETURN r.start, r.end
+    edges = makeQuery('''
+                        Match (n)-[r:REL]->(n2) 
+                        RETURN r.start, r.end, r.nature, r.colour
                         ''')
-    influences = makeQuery('''
-                            Match (n :Text)-[r :INFLUENCED]->(n2 :Text) 
-                            RETURN r.start, r.end, r.Influence
-                            ''')
-    wrote = makeQuery('''
-                        Match (n :Author)-[r :WROTE]->(n2 :Text)
-                        RETURN r.start, r.end
-                        ''')
-    print(influences[0]['r.start'][0])
-    print(genrelinks)
+
     return render_template('graph.html',
                            nodes=nodes,
-                           influences=influences,
-                           wrote=wrote,
-                           genrelinks=genrelinks
+                           edges=edges
                            )
 
 
 
-@app.route('/texts/<string:text_name>')
+@app.route('/text/<string:text_name>')
 def text(text_name):
     #function for rendering individual text page
     q = '''
@@ -98,7 +122,7 @@ def text(text_name):
     return render_template('text.html', text_name=text_name, text_record=text_record)
 
 
-@app.route('/writers/<string:writer_name>')
+@app.route('/author/<string:writer_name>')
 def writer(writer_name):
     #function for rendering individual writer page
     q = '''
@@ -110,7 +134,7 @@ def writer(writer_name):
     return render_template('writer.html', writer_name=writer_name, writer_record=writer_record)
 
 
-@app.route('/genres/<string:genre_name>')
+@app.route('/genre/<string:genre_name>')
 def genres(genre_name):
     #function for rendering individual genre page
     q = '''

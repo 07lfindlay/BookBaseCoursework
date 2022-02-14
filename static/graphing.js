@@ -1,67 +1,84 @@
 function compile(stuff, nodelist, isJson){
     console.log(typeof stuff);
     console.log("compiling ",stuff);
+    var DoneId = [];
     var count;
+
     if (isJson){
         count = objLength(stuff);
     }
+
     else{
         count = stuff.length
     }
+
     console.log(count);
+
     for (let i= 0; i < count; i++) {
-    nodelist.push({
-        'id': stuff[i]['id'],
-        'shape': "circularImage",
-        'image': stuff[i]['image'],
-        'label': stuff[i]['name'],
-        'fixed': false,
-        'url': stuff[i]['type'] + '/' + stuff[i]['name'],
-        'color': {
-            'border': '#00c5ff'
+        if (!DoneId.includes(stuff[i].id)){
+                nodelist.push({
+                        'id': stuff[i]['id'],
+                        'shape': "circularImage",
+                        'image': stuff[i]['image'],
+                        'label': stuff[i]['name'],
+                        'fixed': false,
+                        'url': stuff[i]['type'] + '/' + stuff[i]['name'],
+                        'color': {
+                            'border': '#00c5ff'
+                        }
+                });
+                DoneId.push(stuff[i]['id']);
         }
-    });
-}
+    }
+
     console.log("end of compile nodelist", nodelist);
+
     return nodelist;
 }
 
 function objLength(obj){
-  var i=0;
-  for (var x in obj){
-    if(obj.hasOwnProperty(x)){
-      i++;
+    var i=0;
+    for (var x in obj){
+        if(obj.hasOwnProperty(x)){
+        i++;
+        }
     }
-  }
-  return i;
+
+    return i;
 }
 
-async function OverCompile(nodes, wrote, influences, genrelinks) {
-    var nodelist2 = await Filter();
-    console.log("nodelist", nodelist2)
-    var edgelist = [];
-    for (let j = 0; j < influences.length; j++) {
+function EdgeCompile(edges, edgelist, isJson){
+    if (isJson){
+        count = objLength(edges);
+    }
+
+    else{
+        count = edges.length
+    }
+
+    for (let j = 0; j < count; j++) {
+        console.log("j,st", edges[j]['r.start']);
         edgelist.push(
             {
-                'from': influences[j]['r.start'][0],
-                'to': influences[j]['r.end'][0],
-                'label': influences[j]['r.Influence'][0],
-                'color': "#23a140"
+                'from': edges[j]['r.start'],
+                'to': edges[j]['r.end'],
+                'label': edges[j]['r.nature'],
+                'color': edges[j]['r.colour']
             }
         );
     }
-    for (let j = 0; j < wrote.length; j++) {
-        edgelist.push(
-            {'from': wrote[j]['r.start'], 'to': wrote[j]['r.end'], 'label': 'Wrote', 'color': "#1320c0"}
-        );
-    }
-    for (let j = 0; j < genrelinks.length; j++) {
-        edgelist.push(
-            {'from': genrelinks[j]['r.start'], 'to': genrelinks[j]['r.end'], 'label': 'Genre', 'color': "#af9637"}
-        );
-    }
-    console.log("Nodelist, Edgelist", nodelist2, edgelist)
-    draw(nodelist2, edgelist)
+
+    return edgelist
+}
+
+async function OverCompile(nodes, edges) {
+    var nodelist2 = await Filter();
+    console.log("nodelist", nodelist2)
+    console.log("edgelist", edges)
+    var edgelist = [];
+    let edgelist2 = EdgeCompile(edges, edgelist, false);
+    console.log("Nodelist, Edgelist", nodelist2, edgelist2)
+    draw(nodelist2, edgelist2)
 }
 
 function draw(nodelist, edgelist){
@@ -69,9 +86,10 @@ function draw(nodelist, edgelist){
     var container = document.getElementById("mynetwork");
       var nodes = new vis.DataSet(nodelist);
       var edges = new vis.DataSet(edgelist);
+
       var data = {
-        nodes: nodes,
-        edges: edges
+          nodes: nodes,
+          edges: edges
       };
 
       var options = {
@@ -100,8 +118,8 @@ function draw(nodelist, edgelist){
       var network = new vis.Network(container, data, options);
       network.on("selectNode", function (params) {
         if (params.nodes.length === 1) {
-          var node = nodes.get(params.nodes[0]);
-          window.open(node.url, "_blank");
+            var node = nodes.get(params.nodes[0]);
+            window.open(node.url, "_blank");
         }
         network.unselectAll();
       });
