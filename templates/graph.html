@@ -1,49 +1,55 @@
 <!doctype html>
-    <html lang="en">
+<html lang="en">
 
-      <head>
-        <title>Homepage</title>
-      </head>
-          <script
-          type="text/javascript"
-          src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
-          <script type="text/javascript", src="../static/graphing.js">
-          </script>
-          <script type="text/javascript", src="../static/slider.js">
-          </script>
-          <script type="text/javascript", src="../static/Search.js">
-          </script>
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='CSS/FilterStyling.css') }}">
-    <body onload='OverCompile({{nodes|tojson|safe}},
-                              {{edges|tojson|safe}})' >
-          <div class="GraphBox" id="Overlay">
-            <div class="Overlay">
-              <input type="checkbox" id="texts" name="texts" onclick='OverCompile(
+  <head>
+    <title>AnimationNumberNone</title>
+  </head>
+  <script type="text/javascript" src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script type="text/javascript" , src="../static/graphing.js">
+  </script>
+  <script type="text/javascript" , src="../static/slider.js">
+  </script>
+  <script type="text/javascript" , src="../static/Search.js">
+  </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
+  <!--<link rel="stylesheet" href="{{ url_for('static', filename='CSS/FilterStyling.css') }}">-->
+
+  <body onload='OverCompile({{nodes|tojson|safe}},
+                              {{edges|tojson|safe}})'>
+    <div class="GraphBox" id="Overlay">
+      <div class="Overlay">
+        <p><a href="/Suggestions">Suggestions</a></p>
+        <input type="checkbox" id="texts" name="texts" onclick='OverCompile(
                                 {{nodes|tojson|safe}},
                               {{edges|tojson|safe}})' checked>
-              <label for="texts">Texts</label>
-              <input type="checkbox" id="writers" name="writers" onclick='OverCompile(
+        <label for="texts">Texts</label>
+        <input type="checkbox" id="writers" name="writers" onclick='OverCompile(
                                 {{nodes|tojson|safe}},
                               {{edges|tojson|safe}})' checked>
-              <label for="writers">Writers</label>
-              <input type="checkbox" id="genres" name="genres" onclick='OverCompile(
+        <label for="writers">Writers</label>
+        <input type="checkbox" id="genres" name="genres" onclick='OverCompile(
                                 {{nodes|tojson|safe}},
                                 {{edges|tojson|safe}})' checked>
-              <label for="genres">Genres</label>
-              <div class="search">
-                  <input type="text" class="SearchBar" placeholder="What are you looking for?" id="SearchBar">
-                  <label for="SearchBar">Search</label>
-                  <button type="submit" class="searchButton" onclick='SearchCheck({{edges|tojson|safe}})'>
-                    <i class="fa fa-search"></i>
-                 </button>
-                  <label for="radiusnumber">Relationship depth</label>
-                  <input type="number" id="radiusnumber" name="radiusnumber" min="1" max="5">
-              </div>
-            </div>
+        <label for="genres">Genres</label>
 
-          </div>
-        <div class=graph id="mynetwork"></div>
-    </body>
-    </html>
+        <div class="search">
+          <input type="text" class="SearchBar" placeholder="What are you looking for?" id="SearchBar" maxlength="20">
+          <label for="SearchBar">Search</label>
+          <span role="alert" id="SearchEmpty" aria-hidden="true">
+            The box is empty
+          </span>
+          <button type="submit" class="searchButton" onclick='SearchCheck({{edges|tojson|safe}})'>
+            <i class="fa fa-search"></i>
+          </button>
+          <label for="radiusnumber">Relationship depth</label>
+          <input type="number" id="radiusnumber" name="radiusnumber" min="0" max="5">
+        </div>
+
+      </div>
+
+    </div>
+    <div class=graph id="mynetwork"></div>
+  </body>
+
+</html>

@@ -3,39 +3,37 @@
 
   <head>
     <meta charset="UTF-8">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
-      <link href="../static/CSS/styles.css" rel="stylesheet" type="text/css">
-      <script type="text/javascript", src="../static/SlideShow.js">
-          </script>
-      <title>{{ text_name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+    <link href="../static/CSS/SubpageStylings.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" , src="../static/SlideShow.js">
+    </script>
+    <title>{{ text_name }}</title>
   </head>
 
   <body>
 
-    <div id="Attributes">
-        <h1 id="Title">{{text_name}}</h1>
-        <h2 id="Subtitle">Info</h2>
-        <p id="infotext">Date Written: {{ text_record[0]['n']['released'] }}</p>
+    <div id="Title">
+      <h1 id="Title">{{text_name}}</h1>
     </div>
-    <!-- Slideshow container -->
+    <!-- Slideshow container  w3 schools-->
     <div class="slideshow-container">
 
       <!-- Full-width images with number and caption text -->
       <div class="mySlides fade" style="display: block;">
         <div class="numbertext">1 / 3</div>
-        <img src="{{ text_record[0]['n']['image'] }}" style="width:100%">
+        <img src="{{ text_record[0]['image'] }}" style="width:100%">
       </div>
 
       <div class="mySlides fade">
         <div class="numbertext">2 / 3</div>
-        <img src="{{ text_record[0]['n']['image2'] }}" style="width:100%">
+        <img src="{{ text_record[0]['image2'] }}" style="width:100%">
       </div>
 
       <div class="mySlides fade">
         <div class="numbertext">3 / 3</div>
-        <img src="{{ text_record[0]['n']['image3'] }}" style="width:100%">
+        <img src="{{ text_record[0]['image3'] }}" style="width:100%">
       </div>
 
       <!-- Next and previous buttons -->
@@ -50,10 +48,51 @@
       <span class="dot" onclick="currentSlide(3)"></span>
     </div>
 
-    <h2 id="Subtitle">Synopsis</h2>
-    <p id="infotext">{{ text_record[0]['n']['Synopsis'] }}</p>
+    <!--
+    <div class="recommendations-container">
 
-    <p><a href="/">Back to the main page</a></p>
+
+      <div class="myRecs fade" style="display: block;">
+        <div class="rectext">1 / 3</div>
+        <img src="{{ text_record[0]['image'] }}">
+      </div>
+
+      <div class="myRecs fade">
+        <div class="rectext">2 / 3</div>
+        <img src="{{ text_record[0]['image2'] }}">
+      </div>
+
+      <div class="myRecs fade">
+        <div class="rectext">3 / 3</div>
+        <img src="{{ text_record[0]['image3'] }}">
+      </div>
+
+
+      <a class="prev" onclick="plusRecs(-1)">&#10094;</a>
+      <a class="next" onclick="plusRecs(1)">&#10095;</a>
+    </div>
+    <br>
+
+    <div style="text-align:center">
+      <span class="recdot" onclick="currentRec(1)"></span>
+      <span class="recdot" onclick="currentRec(2)"></span>
+      <span class="redot" onclick="currentRec(3)"></span>
+    </div>
+-->
+    <div id="attributes">
+        <h2 id="Subtitle">Info</h2>
+      <p id="infotext">Date Written: {{ text_record[0]['released'] }}</p>
+    </div>
+    <h2 id="Subtitle">Synopsis</h2>
+    <p id="infotext">{{ text_record[0]['Synopsis'] }}</p>
+    <h2 id="Subtitle">By the same writer</h2>
+    <ul>
+      {% for i in SAuthor_record%}
+      <li><a id="infotext" href="{{ url_for('text', text_name= i['name']) }}">{{i['name']}}</a></li>
+      {% endfor %}
+    </ul>
+
+    <p><a id="infotext" href="/">Back to the main page</a></p>
   </body>
 
 </html>

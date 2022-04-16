@@ -34,3 +34,40 @@ function showSlides(n) {
     slides[slideIndex - 1].style.display = "block";
     dots[slideIndex - 1].className += " active";
 }
+
+var recIndex = 1;
+showRecs(recIndex);
+
+// Next/previous controls
+function plusRecs(n) {
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentRec(n) {
+  showRecs(recIndex = n);
+}
+
+function showRecs(n) {
+    var i,
+        recs = document.getElementsByClassName("myRecs"),
+        recdots = document.getElementsByClassName("recdot");
+
+    if (n === undefined) {
+        n = ++recIndex;
+    }
+    if (n > recs.length) {
+        recIndex = 1;
+    }
+    if (n < 1) {
+        recIndex = reces.length;
+    }
+    for (i = 0; i < recs.length; i++) {
+       recs[i].style.display = "none";
+    }
+    for (i = 0; i < recdots.length; i++) {
+        recdots[i].className = recdots[i].className.replace(" active", "");
+    }
+    recs[recIndex - 1].style.display = "block";
+    recdots[receIndex - 1].className += " active";
+}
