@@ -1,9 +1,10 @@
 function compile(stuff, nodelist, isJson) {
+  //This function converts the node data from the database to a format that can be displayed by the graphing function
   console.log(typeof stuff);
   console.log("compiling ", stuff);
   var DoneId = [];
   var count;
-
+  //Gets the correct number of nodes passed
   if (isJson) {
     count = objLength(stuff);
   } else {
@@ -13,12 +14,12 @@ function compile(stuff, nodelist, isJson) {
   for (let i = 0; i < count; i++) {
     if (!DoneId.includes(stuff[i].id)) {
       nodelist.push({
-        'id': stuff[i]['id'],
+        'id': stuff[i]['id'],//Sets node ID
         'shape': "circularImage",
-        'image': stuff[i]['image'],
+        'image': stuff[i]['image'],//Sets node image
         'label': stuff[i]['name'],
-        'fixed': false,
-        'url': stuff[i]['type'] + '/' + stuff[i]['name'],
+        'fixed': false,//Allows node to be moved
+        'url': stuff[i]['type'] + '/' + stuff[i]['name'],//Sets hyperlink for the node
         'color': {
           'border': '#0b343f'
         }
@@ -30,7 +31,7 @@ function compile(stuff, nodelist, isJson) {
   return nodelist;
 }
 
-//Found Function
+//Function found at https://stackoverflow.com/questions/5223/length-of-a-javascript-object
 function objLength(obj) {
   var i = 0;
   for (var x in obj) {
@@ -43,6 +44,7 @@ function objLength(obj) {
 }
 
 function EdgeCompile(edges, edgelist, isJson) {
+  //Correctly formats relationships
   if (isJson) {
     count = objLength(edges);
   } else {
@@ -63,6 +65,7 @@ function EdgeCompile(edges, edgelist, isJson) {
 }
 
 async function OverCompile(nodes, edges) {
+  //Formats all nodes and relationships passed
   var nodelist2 = await Filter();
   console.log("nodelist", nodelist2)
   console.log("edgelist", edges)
@@ -73,6 +76,7 @@ async function OverCompile(nodes, edges) {
 }
 
 function draw(nodelist, edgelist) {
+  //Creates the graph displayed on the homepage on load
   console.log("Currently Drawing with ", nodelist);
   var container = document.getElementById("mynetwork");
   var nodes = new vis.DataSet(nodelist);
@@ -81,6 +85,7 @@ function draw(nodelist, edgelist) {
     nodes: nodes,
     edges: edges
   };
+  //Graphic options for the nodes and edges
   var options = {
     height: '100%',
     width: "100%",

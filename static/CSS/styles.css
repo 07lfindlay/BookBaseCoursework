@@ -1,9 +1,12 @@
 body {
-  background-image: url("rhizome.JPEG");
+
   background-repeat: no-repeat;
   background-size: cover;
   height: 100vh;
   width: 100vw;
+}
+.BackGround{
+  background-image: url("rhizome.JPEG");
 }
 #mynetwork {
   width: 100vw;

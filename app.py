@@ -16,14 +16,15 @@ app.config.update(dict(
     MAIL_PORT = 465,
     MAIL_USE_TLS = False,
     MAIL_USE_SSL = True,
-    #MAIL_USERNAME = I've taken out the username and password while committing to git',
-    #MAIL_PASSWORD =
+    MAIL_USERNAME='LitRhizome@gmail.com',
+    MAIL_PASSWORD='RhizomeRhizome123'
 ))
 mail = Mail(app)
 
 #Function to send email to self with form content
 @app.route('/process_email', methods=['POST'])
 def process_email():
+    #Sends email from the moderator email to itself so mods can view it
     contents = request.form['message']
     msg = Message('Test', sender='LitRhizome@gmail.com', recipients=['LitRhizome@gmail.com'])
     msg.body = str(contents)#Customize based on user input
@@ -33,7 +34,7 @@ def process_email():
 
 
 @app.route('/AddItemFunc', methods=['POST'])
-
+#Function to query the database to add the specified item
 def AddItemFunc():
     print("starting additem")
     mytype = request.form['type']
@@ -52,8 +53,8 @@ def makeQuery(q):
     #Performs a query to the Neo4j database and returns the results
     #from https://github.com/neo4j-graph-examples/stackoverflow/blob/main/code/python/example.py
     driver = GraphDatabase.driver(
-      "bolt://44.193.3.50:7687",
-      auth=basic_auth("neo4j", "strap-country-lifeboats"))
+      "bolt://44.197.215.199:7687",
+      auth=basic_auth("neo4j", "authority-label-geography"))
     cypher_query = q
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
@@ -62,9 +63,10 @@ def makeQuery(q):
     return results
 
 def AddItemToDB(query):
+    #Connection to the database for the query
     driver = GraphDatabase.driver(
-        "bolt://44.193.3.50:7687",
-        auth=basic_auth("neo4j", "strap-country-lifeboats"))
+        "bolt://44.197.215.199:7687",
+        auth=basic_auth("neo4j", "authority-label-geography"))
     session = driver.session(default_access_mode=WRITE_ACCESS)
     session.run(query)
     session.close()

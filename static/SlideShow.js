@@ -12,6 +12,7 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
+    //Manages sideshow
     var i,
         slides = document.getElementsByClassName("mySlides"),
         dots = document.getElementsByClassName("dot");
