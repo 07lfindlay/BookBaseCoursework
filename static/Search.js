@@ -1,8 +1,15 @@
 function SearchCheck(edges) {
-  if (document.getElementById("radiusnumber").value > 0) {
+  //Validates search bar input and account for search radius
+  if (document.getElementById('SearchBar').value.length > 0){
+    document.getElementById("SearchMessage").innerText = ""
+    if (document.getElementById("radiusnumber").value > 0) {
     WideSearch(edges)
   } else {
     Search(edges)
+  }
+  }
+  else{
+    document.getElementById("SearchMessage").innerText = "Field is empty"
   }
 }
 

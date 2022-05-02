@@ -53,8 +53,8 @@ def makeQuery(q):
     #Performs a query to the Neo4j database and returns the results
     #from https://github.com/neo4j-graph-examples/stackoverflow/blob/main/code/python/example.py
     driver = GraphDatabase.driver(
-      "bolt://44.197.215.199:7687",
-      auth=basic_auth("neo4j", "authority-label-geography"))
+      "bolt://34.200.240.166:7687",
+      auth=basic_auth("neo4j", "science-vicinity-participations"))
     cypher_query = q
     with driver.session(database="neo4j") as session:
       results = session.read_transaction(
@@ -65,8 +65,8 @@ def makeQuery(q):
 def AddItemToDB(query):
     #Connection to the database for the query
     driver = GraphDatabase.driver(
-        "bolt://44.197.215.199:7687",
-        auth=basic_auth("neo4j", "authority-label-geography"))
+        "bolt://34.200.240.166:7687",
+        auth=basic_auth("neo4j", "science-vicinity-participations"))
     session = driver.session(default_access_mode=WRITE_ACCESS)
     session.run(query)
     session.close()

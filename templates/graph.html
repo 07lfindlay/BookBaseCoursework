@@ -35,14 +35,13 @@
 
           <button type="submit" id="backgroundtoggler" name="BackG" onclick="ToggleBack()">Toggle Background</button>
         <div class="search">
-          <input type="text" class="SearchBar" placeholder="What are you looking for?" id="SearchBar" maxlength="20">
-
+          <input type="text" class="SearchBar" placeholder="What are you looking for?" id="SearchBar" maxlength="20" required>
           <label for="radiusnumber">Relationship depth</label>
           <input type="number" id="radiusnumber" name="radiusnumber" min="0" max="5">
             <button type="submit" class="searchButton" onclick='SearchCheck({{edges|tojson|safe}})'>Search
             <i class="searchButton"></i>
           </button>
-
+        <p id="SearchMessage"></p>
         </div>
 
       </div>
